@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% include 'navbar.html' %}
+
+{% block content %}
+{% from "_formhelpers.html" import render_field %}
+
+{{ moment.include_jquery() }}
+{{ moment.include_moment() }}
+
+<div>
+      <div class="media">
+        <img class="account-img" src="{{image_file}}">
+        <div class="media-body">
+          
+          <h2 class="account-heading">{{user.username}} 
+            {% if current_user != user %}
+              {% if not current_user.is_following(user) %}
+                <span><a class="btn btn-primary" href="{{url_for('main.follow', username=user.username)}}">Follow</a></span>
+              {% else %}
+                <span><a class="btn btn-primary" href="{{url_for('main.unfollow', username=user.username)}}">Unfollow</a></span>
+              {% endif %}
+            {% else %}
+            <button style="padding: 10px; border: 0;" data-toggle="modal" data-target="#exampleModal" class="btn btn-secondary">New post</button>
+            {% endif %}
+          </h2>
+            <p>Member since <strong>{{ moment(user.member_since).format('L') }}.</strong> Last seen <strong>{{ moment(user.last_seen).fromNow() }}.</strong></p>
+          <p>
+            <a href="#">Posts: <span class="badge">{{user.posts.count()}}</span></a>
+            <a href="{{url_for('main.followers', username=user.username)}}">Followers: <span class="badge">{{user.followers.count() - 1}}</span></a>
+            <a href="{{url_for('main.followed_by', username=user.username)}}">Following: <span class="badge">{{user.followed.count() - 1}}</span></a>
+        </p>
+        <p>
+          {% if current_user %}
+            <span><a class="btn btn-primary" href="{{url_for('main.update_account', id=user.id)}}">Update</a></span>
+            {% endif %}
+        </p>
+        </div>
+      </div>
+
+
+          <div class="album py-5 bg-light">
+            <div class="container">
+              <div class="row">
+                {% for post in image_posts %}
+                <div class="col-md-4">
+                  <div class="card mb-4 shadow-sm">
+                    <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{post}}" preserveAspectRatio="xMidYMid slice"></img>
+                    
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+</div>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+</button>
+
+<!-- Modal -->
+<form action="{{url_for('main.account', username=user.username)}}" method="POST" enctype="multipart/form-data">
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add a new Post</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Choose file</button> -->
+        {{ render_field(form.image_post, class="form-control-file") }}
+        {{ render_field(form.caption, class="form-control") }}
+      </div>
+      <div class="modal-footer form-group">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+
+  <style>
+    .account-img {
+      height: 180px; 
+      width: 180px;
+      border-radius: 50%; 
+
+}
+  .media{
+    margin-top: 40px;
+  }
+
+    .media-body{
+      margin-left: 20px;
+      margin-top: 35px;
+    }
+  </style>
+
+
+
+
+{% endblock content %}

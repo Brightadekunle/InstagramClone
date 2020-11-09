@@ -1,0 +1,26 @@
+{% extends 'base.html' %} {% include 'navbar.html' %} {% block title %}Instagram
+- Followers of {{user.username}} {% endblock %} {% block content %} {{
+moment.include_jquery() }} {{ moment.include_moment() }}
+
+<div class="page-header">
+  <h1>Followed_by of {{user.username}}</h1>
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <!-- <th scope="col">#</th> -->
+
+      <th scope="col">Name</th>
+      <th scope="col">Since</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for followed in followed_by %}
+    <tr>
+      <td>{{followed.followed.name}}</td>
+      <td>{{moment(followed.timestamp).format('L')}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock content %}

@@ -1,0 +1,91 @@
+{% extends 'base.html' %} {% include 'navbar.html' %} {% block content %} {{
+moment.include_jquery() }} {{ moment.include_moment() }}
+
+
+<div style="max-width: 93.5rem; margin: 0 auto; padding: 0 2rem">
+  {% for post in image_post%}
+
+  <div class="card" style="margin-top: 80px">
+    <div class="card-header">
+      <span><img class="account-img" src="{{post[1].author.profile_picture}}" /></span>
+      <span><strong>{{post[1].author.username}}</strong></span>
+    </div>
+
+    <img src="{{ post[0] }}" class="card-img-top" alt="..." />
+    <div class="card-body">
+      {% if current_user.has_liked_post(post[1]) %}
+      <a
+        href="{{url_for('main.like_action', id=post[1].id, action='unlike')}}"
+        class="dislikes"
+        id=""
+        ><i class="fa fa-heart" style="color: red" aria-hidden="true"></i
+      ></a>
+      {% else %}
+      <a
+        href="{{url_for('main.like_action', id=post[1].id, action='like')}}"
+        class="likes"
+        id=""
+        ><i
+          class="fa fa-heart-o"
+          style="outline-color: dimgray"
+          aria-hidden="true"
+        ></i
+      ></a>
+      {% endif %}
+      <p id="">{{ post[1].likes.count() }}</p>
+      <p class="card-text">
+        <strong>{{post[1].author.username}} </strong>{{post[1].caption}}
+      </p>
+      <p class="card-text">
+        <small class="text-muted">Posted: {{moment(post[1].timestamp).format('LLL')}}</small>
+      </p>
+    </div>
+
+    <div style="" id="">
+      {% for comment in comments %}
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item" style="border: none" id="prof">
+          <a href="#" style="text-decoration: none; color: black"
+            ><strong>{{comment.author.name}}</strong></a
+          >
+          <span id="body">{{comment.body}}</span>
+        </li>
+      </ul>
+      {% endfor %}
+    </div>
+
+    <table>
+      <form method="POST" action="{{url_for('main.comment', id=post[1].id)}}">
+        <input type="hidden" id="username" value="" />
+        <tr>
+          <input
+            class="form-control comment"
+            placeholder="Add a comment"
+            style="width: 35.9em; height: 4em"
+            id=""
+            name="comment"
+          />
+        </tr>
+        <tr>
+          <button class="btn btn-primary" class="submit">Post</button>
+        </tr>
+      </form>
+    </table>
+  </div>
+
+  {%endfor%}
+</div>
+
+<style type="text/css">
+  .account-img{
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+  }
+    @media only screen and (min-width: 780px){
+      .card{
+        margin-left: 14.5em;
+        width: 36em;
+      }
+</style>
+{% endblock content %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %} {% include 'navbar.html' %} {% block content %} {%
+from "_formhelpers.html" import render_field %}
+<form
+  method="POST"
+  action="{{url_for('main.update_account', id=user.id)}}"
+  enctype="multipart/form-data"
+>
+  <fieldset class="form-group">
+    <div class="form-group">
+      {{ render_field(form.username, class='form-control') }} {{
+      render_field(form.email, class='form-control') }}
+    </div>
+    <div class="form-group">
+      {{ render_field(form.profile_picture, class="form-control-file") }}
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+  </fieldset>
+</form>
+
+<style>
+  .form-group {
+    width: 300px;
+  }
+</style>
+
+{% endblock content %}

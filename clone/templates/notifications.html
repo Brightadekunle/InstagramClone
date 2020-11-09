@@ -1,0 +1,26 @@
+{% extends 'base.html' %} {% include 'navbar.html' %} {% block title %}Instagram
+- Notifications {% endblock %} {% block content %} {{
+moment.include_jquery() }} {{ moment.include_moment() }}
+
+<div class="page-header">
+  <h1>Notifications</h1>
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <!-- <th scope="col">#</th> -->
+
+      <th scope="col">Name</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for notification in notifications %}
+    <tr>
+      <td>{{notification.name}} <small>{{moment(notification.timestamp).format('LLL')}}</small></td>
+      <td><a class="btn btn-danger" href="{{url_for('main.delete_notification', id=notification.id)}}">Delete</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock content %}

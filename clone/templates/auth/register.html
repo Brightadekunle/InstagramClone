@@ -1,0 +1,40 @@
+{% extends 'base.html' %} {% block content %} {% from "_formhelpers.html" import
+render_field %}
+<!-- <h2 class="reg">Register</h2> -->
+
+<div class="row mt-4">
+  <form
+    action="{{url_for('auth.register')}}"
+    method="POST"
+    enctype="multipart/form-data"
+  >
+    {{form.csrf_token}}
+    <fieldset class="form-group">
+      <div>
+        {{ render_field(form.name, class='form-control') }} {{
+        render_field(form.username, class='form-control') }} {{
+        render_field(form.email, class='form-control') }} {{
+        render_field(form.password, class='form-control') }} {{
+        render_field(form.confirm_password, class='form-control') }}
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">Register</button>
+      </div>
+    </fieldset>
+  </form>
+</div>
+
+<style>
+  .row {
+    margin-left: 300px;
+  }
+
+  button {
+    width: 300px;
+  }
+  label {
+    font-weight: bolder;
+  }
+</style>
+
+{% endblock content %}
